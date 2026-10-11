@@ -1,16 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>SINPE</title>
-  <script>
-    window.onload = function() {
-      navigator.clipboard.writeText("87280287").then(function() {
-        alert("Número copiado");
-      });
-    };
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SINPE Móvil</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .btn-copiar {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-copiar:active {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-  <p>Copiando número de SINPE...</p>
+
+  <h2>Pago por SINPE Móvil</h2>
+  <p>Presiona el botón para copiar el número de teléfono:</p>
+  
+  <!-- Cambiamos la acción automática por un botón clickeable -->
+  <button class="btn-copiar" onclick="copiarSinpe()">Copiar 8728 0287</button>
+
+  <script>
+    function copiarSinpe() {
+      navigator.clipboard.writeText("87280287")
+        .then(function() {
+          alert("Número SINPE copiado exitosamente");
+        })
+        .catch(function(err) {
+          // Alternativa de respaldo por si el navegador bloquea la API del portapapeles
+          alert("No se pudo copiar automáticamente. El número es: 87280287");
+        });
+    }
+  </script>
+
 </body>
 </html>
