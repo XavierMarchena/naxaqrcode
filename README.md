@@ -1,1 +1,1 @@
-# qrcode.github.io
+# naxaqrcode.github.io
