@@ -1,50 +1,644 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SINPE Móvil</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px 20px;
-    }
-    .btn-copiar {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .btn-copiar:active {
-      background-color: #0056b3;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Una mirada propia. Instantes que permanecen.">
+<meta name="theme-color" content="#e7efe4">
+<title>NAXA Photography</title>
+<link rel="canonical" href="https://lab.yansiestore.com/naxa/">
+<meta property="og:title" content="NAXA Photography">
+<meta property="og:description" content="Una mirada propia. Instantes que permanecen.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lab.yansiestore.com/naxa/">
+<meta property="og:image" content="https://lab.yansiestore.com/naxa/assets/image-cc27863b49869d95.webp">
+<meta property="og:image:alt" content="Ambientación original generada: cámara y materiales fotográficos en luz natural">
+<style>
+  /* ============ Design tokens ============ */
+  :root{
+    color-scheme:light;
+    --bg:#e7efe4;
+    --surface:#ffffff;
+    --panel:#f3f7f1;
+    --panel-2:#ecf3ea;
+    --ink:#122a1f;
+    --muted:#5c7365;
+    --line:#dbe5d8;
+    --accent:#1f6b4a;
+    --accent-2:#2f8a60;
+    --accent-soft:#e2f0e7;
+    --radius-xl:28px;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:11px;
+    --shadow-1:0 1px 2px rgba(14,42,28,.05),0 6px 18px -10px rgba(14,42,28,.25);
+    --shadow-2:0 30px 70px -34px rgba(14,42,28,.5);
+    --font:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+
+  /* ============ Base ============ */
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    min-height:100dvh;
+    font-family:var(--font);
+    font-size:16px;
+    line-height:1.5;
+    color:var(--ink);
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(900px 480px at 50% -12%,#f7fbf5 0%,rgba(247,251,245,0) 60%),
+      radial-gradient(760px 520px at 100% 108%,#dbead8 0%,rgba(219,234,216,0) 55%);
+    background-attachment:fixed;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:clamp(14px,3.5vw,40px);
+    padding-bottom:calc(clamp(14px,3.5vw,40px) + env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+
+  /* ============ Card shell ============ */
+  .profile{
+    position:relative;
+    width:100%;
+    max-width:940px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-xl);
+    box-shadow:var(--shadow-2);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    animation:profile-in .55s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .profile::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:4px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2) 55%,#8ecfa9);
+    z-index:3;
+  }
+  @keyframes profile-in{from{opacity:0;transform:translateY(12px) scale(.996)}to{opacity:1;transform:none}}
+
+  /* ============ Intro column ============ */
+  .intro{
+    min-width:0;
+    padding:clamp(14px,2.6vw,20px);
+    display:flex;
+    flex-direction:column;
+    gap:clamp(12px,2vw,16px);
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  }
+  .cover{
+    position:relative;
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    background:var(--panel-2);
+    box-shadow:var(--shadow-1);
+  }
+  .cover img{
+    width:100%;
+    height:clamp(150px,34vw,205px);
+    object-fit:cover;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .cover::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(12,40,26,0) 52%,rgba(12,40,26,.4));
+    pointer-events:none;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .cover:hover img{transform:scale(1.04)}
+  }
+
+  .identity{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    gap:14px;
+    min-width:0;
+  }
+  .avatar{
+    width:60px;height:60px;
+    flex:0 0 auto;
+    border-radius:50%;
+    object-fit:contain;
+    object-position:center;
+    background:var(--panel-2);
+    padding:6px;
+    border:3px solid var(--surface);
+    box-shadow:0 0 0 1px var(--line),var(--shadow-1);
+  }
+  .identity-text{min-width:0}
+  .eyebrow{
+    display:inline-block;
+    margin:0 0 7px;
+    padding:3px 10px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    font-size:10px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  h1{
+    margin:0;
+    font-size:clamp(24px,5.6vw,32px);
+    font-weight:700;
+    letter-spacing:-.035em;
+    line-height:1.1;
+    text-wrap:balance;
+    overflow-wrap:anywhere;
+  }
+  .tagline{
+    margin:7px 0 0;
+    color:var(--muted);
+    font-size:clamp(13px,3.2vw,15px);
+    line-height:1.5;
+    text-wrap:pretty;
+  }
+  .descriptor{
+    margin:6px 0 0;
+    color:var(--accent);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.02em;
+  }
+
+  /* ============ Content column ============ */
+  .content{
+    min-width:0;
+    padding:clamp(16px,2.8vw,26px);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .links{display:grid;gap:10px}
+  .link{
+    --n-bg:#20242c;
+    --n-fg:#ffffff;
+    --n-tile:rgba(255,255,255,.2);
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:56px;
+    padding:11px 14px;
+    border-radius:var(--radius-md);
+    background:var(--n-bg);
+    color:var(--n-fg);
+    font-size:15px;font-weight:600;
+    overflow:hidden;
+    box-shadow:var(--shadow-1);
+    transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  }
+  .link .ico{
+    display:grid;place-items:center;
+    width:34px;height:34px;flex:0 0 34px;
+    border-radius:10px;
+    background:var(--n-tile);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);
+  }
+  .link .ico svg{width:20px;height:20px}
+  .link .label{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+  .link .go{flex:0 0 auto;font-size:16px;opacity:.85;transition:transform .18s ease}
+  .link[data-network="instagram"]{
+    --n-bg:linear-gradient(110deg,#c34610 0%,#d70063 46%,#b100bb 76%,#7533e9 100%);
+    --n-fg:#fff;
+  }
+  .link[data-network="facebook"]{--n-bg:linear-gradient(110deg,#0a5ce0,#0866ff);--n-fg:#fff}
+  .link[data-network="whatsapp"]{--n-bg:linear-gradient(110deg,#1fbe5b,#25d366);--n-fg:#0b2e1c;--n-tile:rgba(0,0,0,.1)}
+  .link[data-network="whatsapp"] .ico{box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  @media (hover:hover) and (pointer:fine){
+    .link:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(14,42,28,.6);filter:saturate(1.05)}
+    .link:hover .go{transform:translate(2px,-2px)}
+  }
+  .link:active{transform:translateY(0)}
+
+  /* ============ Payment card ============ */
+  .payments{display:block}
+  .pay{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-height:58px;
+    padding:12px 15px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    background:var(--surface);
+    box-shadow:var(--shadow-1);
+    text-align:left;
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;
+  }
+  .pay .badge{
+    display:grid;place-items:center;
+    width:40px;height:40px;flex:0 0 40px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#fff;
+    box-shadow:0 6px 14px -8px rgba(31,107,74,.9);
+  }
+  .pay .badge svg{width:22px;height:22px}
+  .pay .txt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .pay .txt strong{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .pay .txt small{font-size:12px;color:var(--muted)}
+  .pay .chev{flex:0 0 auto;color:var(--muted);font-size:16px;transition:transform .18s ease,color .18s ease}
+  @media (hover:hover) and (pointer:fine){
+    .pay:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-2px)}
+    .pay:hover .chev{transform:translate(2px,-2px);color:var(--accent)}
+  }
+
+  /* ============ Footer ============ */
+  .footer{
+    margin-top:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    color:var(--muted);
+  }
+  .copy-links{
+    min-height:42px;
+    padding:9px 15px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--surface);
+    color:var(--ink);
+    font-size:12px;font-weight:600;
+    transition:background .16s ease,border-color .16s ease,transform .16s ease;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .copy-links:hover{background:var(--accent-soft);border-color:var(--accent)}
+  }
+  .copy-links:active{transform:scale(.98)}
+
+  /* ============ Dialogs ============ */
+  dialog{
+    border:0;
+    padding:0;
+    background:transparent;
+    color:var(--ink);
+    max-width:100%;
+    overflow:visible;
+  }
+  dialog::backdrop{
+    background:rgba(9,26,17,.55);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+  }
+  @keyframes sheet-in{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+  @keyframes fade-in{from{opacity:0}to{opacity:1}}
+  dialog[open]{animation:sheet-in .26s cubic-bezier(.2,.7,.2,1) both}
+  dialog[open]::backdrop{animation:fade-in .26s ease both}
+
+  .sheet{
+    width:min(460px,calc(100vw - 32px));
+    max-height:min(86dvh,760px);
+    overflow:auto;
+    padding:clamp(18px,4vw,24px);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    background:var(--surface);
+    box-shadow:0 30px 80px -24px rgba(0,0,0,.55);
+    text-align:left;
+  }
+  .sheet-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+  }
+  .country{
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .sheet-head h2{
+    margin:5px 0 0;
+    font-size:clamp(20px,4.6vw,23px);
+    letter-spacing:-.03em;
+    line-height:1.2;
+  }
+  .close{
+    display:grid;place-items:center;
+    width:42px;height:42px;flex:0 0 42px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:var(--panel);
+    color:var(--ink);
+    font-size:22px;line-height:1;
+    transition:background .16s ease,transform .16s ease;
+  }
+  @media (hover:hover) and (pointer:fine){
+    .close:hover{background:var(--accent-soft);transform:rotate(90deg)}
+  }
+
+  .beneficiary{
+    margin-top:18px;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--panel);
+  }
+  .beneficiary span{display:block;font-size:11px;line-height:1.5;color:var(--muted)}
+  .beneficiary strong{display:block;margin-top:4px;font-size:16px;letter-spacing:-.01em;overflow-wrap:anywhere}
+
+  .copy-field{display:block;margin-top:16px;font-size:12px;font-weight:600;color:var(--muted)}
+  .row{display:flex;gap:8px;margin-top:7px}
+  .copy-field .row{margin-top:7px}
+  input[readonly]{
+    flex:1 1 auto;
+    min-width:0;
+    min-height:48px;
+    padding:11px 13px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--panel);
+    color:var(--ink);
+    font-family:var(--mono);
+    font-size:16px;
+    letter-spacing:.02em;
+  }
+  .copy-btn{
+    flex:0 0 auto;
+    min-height:48px;
+    padding:0 16px;
+    border:1px solid transparent;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#fff;
+    font-size:14px;font-weight:650;
+    white-space:nowrap;
+    transition:filter .16s ease,transform .16s ease,background .16s ease;
+  }
+  .copy-btn:hover{filter:brightness(1.07)}
+  .copy-btn:active{transform:scale(.97)}
+  .copy-btn.is-copied{background:linear-gradient(135deg,#1c7a4f,#37a06b)}
+
+  .notice{margin:18px 0 0;font-size:12px;line-height:1.6;color:var(--muted)}
+  .status{margin:12px 0 0;font-size:12px;line-height:1.5;color:var(--accent);font-weight:600}
+  .status:empty{display:none}
+
+  .link-row{padding:14px 0;border-top:1px solid var(--line)}
+  .link-row:first-of-type{border-top:0;padding-top:6px}
+  .link-row label{display:block;margin-bottom:8px;font-size:13px;font-weight:600}
+  .link-row input[readonly]{font-size:14px;min-height:46px}
+
+  /* ============ Responsive ============ */
+  @media (min-width:780px){
+    .profile{grid-template-columns:minmax(250px,.82fr) minmax(0,1.4fr);align-items:stretch}
+    .intro{border-right:1px solid var(--line)}
+    .cover img{height:172px}
+    .avatar{width:66px;height:66px}
+    .content{padding:clamp(20px,2.4vw,28px)}
+    .footer{border-top:1px solid var(--line)}
+  }
+  @media (max-width:420px){
+    .profile{border-radius:24px}
+    .link{font-size:14px;padding:10px 12px;min-height:54px}
+    .pay .txt strong{font-size:14px}
+    .row{gap:7px}
+    .copy-btn{padding:0 13px;font-size:13px}
+  }
+  @media (max-width:340px){
+    .link .ico{width:30px;height:30px;flex-basis:30px}
+    input[readonly]{font-size:15px}
+  }
+</style>
 </head>
 <body>
+<main class="profile">
+  <aside class="intro">
+    <div class="cover">
+      <img src="assets/image-cc27863b49869d95.webp" alt="Ambientación original generada: cámara y materiales fotográficos en luz natural" width="1280" height="720">
+    </div>
+    <div class="identity">
+      <img class="avatar" src="assets/image-0789371c3a43d132.webp" alt="Logo original de NAXA Photography" width="128" height="128">
+      <div class="identity-text">
+        <span class="eyebrow">Profesional</span>
+        <h1>NAXA Photography</h1>
+        <p class="tagline">Una mirada propia. Instantes que permanecen.</p>
+        <p class="descriptor">Fotografía</p>
+      </div>
+    </div>
+  </aside>
 
-  <h2>Pago por SINPE Móvil</h2>
-  <p>Presiona el botón para copiar el número de teléfono:</p>
-  
-  <!-- Cambiamos la acción automática por un botón clickeable -->
-  <button class="btn-copiar" onclick="copiarSinpe()">Copiar 8728 0287</button>
+  <section class="content">
+    <nav class="links" aria-label="Redes sociales">
+      <a class="link" data-network="instagram" href="https://www.instagram.com/naxaphotography/" target="_blank" rel="noopener noreferrer nofollow ugc">
+        <span class="ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"></circle></svg>
+        </span>
+        <span class="label">Instagram</span>
+        <span class="go" aria-hidden="true">&#8599;</span>
+      </a>
+      <a class="link" data-network="facebook" href="https://www.facebook.com/share/1EnqvGxbec/" target="_blank" rel="noopener noreferrer nofollow ugc">
+        <span class="ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22v-9h3l.5-4H14V6.5c0-1.4.4-2 2-2h2V1.3A21 21 0 0 0 15 1c-3 0-5 1.8-5 5V9H7v4h3v9"></path></svg>
+        </span>
+        <span class="label">Facebook</span>
+        <span class="go" aria-hidden="true">&#8599;</span>
+      </a>
+      <a class="link" data-network="whatsapp" href="https://wa.me/50687280287" target="_blank" rel="noopener noreferrer nofollow ugc">
+        <span class="ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-11.7 7L4 20l1.5-4.2A8 8 0 1 1 20 11.5Z"></path><path d="M8.3 7.5c-.8 3.8 3 7.4 6.8 7l1-2-2.2-1-1 1c-1.2-.6-2.3-1.7-2.8-2.8l1-1-1-2.2Z"></path></svg>
+        </span>
+        <span class="label">WhatsApp</span>
+        <span class="go" aria-hidden="true">&#8599;</span>
+      </a>
+    </nav>
 
-  <script>
-    function copiarSinpe() {
-      navigator.clipboard.writeText("87280287")
-        .then(function() {
-          alert("Número SINPE copiado exitosamente");
-        })
-        .catch(function(err) {
-          // Alternativa de respaldo por si el navegador bloquea la API del portapapeles
-          alert("No se pudo copiar automáticamente. El número es: 87280287");
-        });
+    <section class="payments">
+      <button type="button" class="pay" data-open="payment-details-dialog" aria-haspopup="dialog" aria-controls="payment-details-dialog">
+        <span class="badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"></rect><path d="M3 10h18M7 15h3"></path></svg>
+        </span>
+        <span class="txt">
+          <strong>Métodos de pago</strong>
+          <small>SINPE Móvil · Costa Rica</small>
+        </span>
+        <span class="chev" aria-hidden="true">&#8599;</span>
+      </button>
+
+      <dialog id="payment-details-dialog" aria-labelledby="payment-dialog-title">
+        <div class="sheet">
+          <header class="sheet-head">
+            <div>
+              <span class="country">Costa Rica</span>
+              <h2 id="payment-dialog-title">Métodos de pago</h2>
+            </div>
+            <button type="button" class="close" data-close aria-label="Cerrar métodos de pago">&times;</button>
+          </header>
+
+          <div class="beneficiary">
+            <span>Nombre del beneficiario aportado por ti</span>
+            <strong>NAXA</strong>
+          </div>
+
+          <label class="copy-field">SINPE Móvil · Costa Rica
+            <span class="row">
+              <input readonly value="+50687280287" aria-label="SINPE Móvil · Costa Rica">
+              <button type="button" class="copy-btn" data-copy-value="+50687280287" data-copy-status="sinpe-status">Copiar</button>
+            </span>
+          </label>
+
+          <p class="notice">Copia los datos aportados por el titular. Esto no realiza ni confirma un pago. Aquí no se verifican afiliación SINPE, titularidad bancaria ni depósitos.</p>
+          <p class="status" id="sinpe-status" role="status" aria-live="polite"></p>
+        </div>
+      </dialog>
+    </section>
+
+    <footer class="footer">
+      <span>NAXA Photography</span>
+      <button type="button" class="copy-links" data-open="links-dialog">Copiar enlaces</button>
+    </footer>
+  </section>
+</main>
+
+<dialog id="links-dialog" aria-labelledby="links-dialog-title">
+  <div class="sheet">
+    <header class="sheet-head">
+      <h2 id="links-dialog-title" style="margin-top:0">Copiar un enlace</h2>
+      <button type="button" class="close" data-close aria-label="Cerrar">&times;</button>
+    </header>
+
+    <div class="link-row">
+      <label for="lnk-instagram">Instagram</label>
+      <div class="row">
+        <input id="lnk-instagram" readonly value="https://www.instagram.com/naxaphotography/">
+        <button type="button" class="copy-btn" data-copy-value="https://www.instagram.com/naxaphotography/" data-copy-status="lnk-instagram-status">Copiar</button>
+      </div>
+      <p class="status" id="lnk-instagram-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="link-row">
+      <label for="lnk-facebook">Facebook</label>
+      <div class="row">
+        <input id="lnk-facebook" readonly value="https://www.facebook.com/share/1EnqvGxbec/">
+        <button type="button" class="copy-btn" data-copy-value="https://www.facebook.com/share/1EnqvGxbec/" data-copy-status="lnk-facebook-status">Copiar</button>
+      </div>
+      <p class="status" id="lnk-facebook-status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="link-row">
+      <label for="lnk-whatsapp">WhatsApp</label>
+      <div class="row">
+        <input id="lnk-whatsapp" readonly value="https://wa.me/50687280287">
+        <button type="button" class="copy-btn" data-copy-value="https://wa.me/50687280287" data-copy-status="lnk-whatsapp-status">Copiar</button>
+      </div>
+      <p class="status" id="lnk-whatsapp-status" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+  var doc = document;
+
+  /* ---- Dialog open / close (native <dialog>) ---- */
+  function openDialog(el) {
+    if (!el || el.open) return;
+    if (typeof el.showModal === "function") { try { el.showModal(); return; } catch (e) {} }
+    el.setAttribute("open", "");
+  }
+  function closeDialog(el) {
+    if (!el) return;
+    if (typeof el.close === "function" && el.open) { el.close(); return; }
+    el.removeAttribute("open");
+  }
+
+  doc.addEventListener("click", function (event) {
+    var opener = event.target.closest("[data-open]");
+    if (opener) {
+      event.preventDefault();
+      var target = doc.getElementById(opener.getAttribute("data-open"));
+      if (target && target.tagName === "DIALOG") openDialog(target);
+      return;
     }
-  </script>
+    var closer = event.target.closest("[data-close]");
+    if (closer) {
+      event.preventDefault();
+      closeDialog(closer.closest("dialog"));
+    }
+  });
 
+  /* Click on the dimmed backdrop closes the dialog. */
+  Array.prototype.forEach.call(doc.querySelectorAll("dialog"), function (dlg) {
+    dlg.addEventListener("click", function (event) {
+      if (event.target !== dlg) return;
+      var r = dlg.getBoundingClientRect();
+      var inside = event.clientX >= r.left && event.clientX <= r.right &&
+                   event.clientY >= r.top  && event.clientY <= r.bottom;
+      if (!inside) closeDialog(dlg);
+    });
+  });
+
+  /* ---- Clipboard with graceful fallback ---- */
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return legacyCopy(text); });
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+  function legacyCopy(text) {
+    try {
+      var area = doc.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.cssText = "position:fixed;top:0;left:-9999px;opacity:0";
+      doc.body.appendChild(area);
+      area.select();
+      area.setSelectionRange(0, area.value.length);
+      var ok = doc.execCommand("copy");
+      doc.body.removeChild(area);
+      return ok;
+    } catch (e) { return false; }
+  }
+
+  doc.addEventListener("click", function (event) {
+    var btn = event.target.closest("[data-copy-value]");
+    if (!btn) return;
+
+    var value = btn.getAttribute("data-copy-value");
+    var status = doc.getElementById(btn.getAttribute("data-copy-status") || "");
+    var label = btn.textContent;
+    var input = btn.closest(".row") && btn.closest(".row").querySelector("input");
+
+    copyText(value).then(function (ok) {
+      if (status) {
+        status.textContent = ok
+          ? "Copiado. No se ha realizado ni confirmado un pago."
+          : "No se pudo copiar automáticamente. Selecciona el dato y cópialo manualmente.";
+      }
+      if (!ok && input) { input.focus(); input.select(); }
+      btn.textContent = ok ? "¡Copiado!" : "Copiar";
+      btn.classList.toggle("is-copied", ok);
+      window.setTimeout(function () {
+        btn.textContent = label;
+        btn.classList.remove("is-copied");
+      }, 1800);
+    });
+  });
+})();
+</script>
 </body>
 </html>
